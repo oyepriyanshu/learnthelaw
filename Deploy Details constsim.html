@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Argue with the Constitution</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{--bg:#eef1f7;--ink:#141c3a;--mute:#5a6285;--card:#fff;--line:#d3d9ea;--navy:#243a9c;--glow:#4a62e8;--push:#c9620a;--pushbg:#fff3e6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0d1330;--ink:#e8ecff;--mute:#9aa4d6;--card:#161e47;--line:#2a346b;--navy:#8b9cff;--glow:#7d90ff;--push:#ffa24d;--pushbg:#2a2036}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d1330;--ink:#e8ecff;--mute:#9aa4d6;--card:#161e47;--line:#2a346b;--navy:#8b9cff;--glow:#7d90ff;--push:#ffa24d;--pushbg:#2a2036}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:18px;line-height:1.65}
+main{max-width:680px;margin:0 auto;padding:28px 20px 72px}
+h1{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:clamp(34px,8vw,56px);line-height:1.05;letter-spacing:-.02em;margin:28px 0 14px}
+.sub{color:var(--mute);margin:0 0 26px}
+.trail{display:flex;align-items:center;flex-wrap:wrap;gap:0;min-height:20px;font-family:"Bricolage Grotesque",sans-serif;font-size:13px;color:var(--mute)}
+.node{display:flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--navy);opacity:.55}
+.node.now .dot{opacity:1;background:var(--glow);box-shadow:0 0 0 4px color-mix(in srgb,var(--glow) 25%,transparent),0 0 14px var(--glow)}
+.link{width:22px;height:2px;background:var(--line);margin:0 6px}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 10px;cursor:pointer;transition:border-color .15s,transform .15s}
+.opt:hover{border-color:var(--glow)}
+.opt:focus-visible,.go:focus-visible,summary:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+.opt.sel{border-color:var(--glow);background:color-mix(in srgb,var(--glow) 10%,var(--card))}
+.push{margin:22px 0;padding:16px 18px;background:var(--pushbg);border-left:4px solid var(--push);border-radius:2px 10px 10px 2px;animation:jolt .35s ease-out}
+.push b{display:block;font-family:"Bricolage Grotesque",sans-serif;color:var(--push);font-size:14px;margin-bottom:4px}
+.push p{margin:0;font-size:19px}
+@keyframes jolt{0%{transform:translateX(-10px);opacity:0}60%{transform:translateX(3px)}100%{transform:none;opacity:1}}
+.lead{font-family:"Bricolage Grotesque",sans-serif;font-weight:500;color:var(--mute);margin:28px 0 10px;font-size:15px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0 0 8px}
+summary{cursor:pointer;padding:12px 16px;font-family:"Bricolage Grotesque",sans-serif;font-weight:500;font-size:16px;list-style:none;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--glow);font-weight:700;width:12px}
+details[open] summary::before{content:"\2212"}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:1px 9px;color:var(--mute)}
+.tag.held{color:var(--navy);border-color:var(--navy)}
+.tag.contested{color:var(--push);border-color:var(--push)}
+.tag.text{color:var(--ink);border-color:var(--ink)}
+.tag.idea{font-style:italic}
+details p{margin:0;padding:0 16px 16px 38px;font-size:17px;animation:open .25s ease-out}
+@keyframes open{from{opacity:0;transform:translateY(-4px)}}
+.next{margin-top:30px;border-top:1px solid var(--line);padding-top:22px}
+.nq{font-family:"Bricolage Grotesque",sans-serif;font-size:22px;font-weight:700;line-height:1.2;margin:0 0 14px}
+.go{font:inherit;font-family:"Bricolage Grotesque",sans-serif;font-weight:500;background:var(--navy);color:var(--bg);border:0;border-radius:99px;padding:11px 22px;cursor:pointer}
+.go.alt{background:transparent;color:var(--navy);border:1.5px solid var(--navy);margin-left:8px}
+.step{display:flex;gap:12px;margin:0 0 14px}
+.step .dot{margin-top:11px;flex:none}
+.step small{display:block;color:var(--mute);font-family:"Bricolage Grotesque",sans-serif;font-size:13px}
+.step .opened{display:block;color:var(--mute);font-size:15px;font-style:italic;margin-top:2px}
+form{margin-top:8px}
+label{display:block;font-family:"Bricolage Grotesque",sans-serif;font-weight:500;font-size:15px;margin:0 0 6px}
+input{display:block;width:100%;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 18px}
+input:focus-visible{outline:3px solid var(--glow);outline-offset:2px;border-color:var(--glow)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.err{color:var(--push);font-family:"Bricolage Grotesque",sans-serif;font-size:15px;margin:0 0 14px;min-height:1em}
+.fine{color:var(--mute);font-size:14px;margin-top:18px}
+.note{color:var(--mute);font-size:14px;margin-top:48px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var C={
+c1:{short:"The ban",q:"Your film has been banned.",sub:"Days before release, a state government bans it, saying it could hurt a community’s sentiments and set off protests. What should happen?",
+opts:[
+{l:"No government should be able to ban a film.",who:"A district police officer says",p:"Even if people will riot? If someone gets hurt, you’d still say speech comes first?",n:"c2"},
+{l:"Ban it if it threatens public order.",who:"A journalist says",p:"Who decides what counts as “public order”? The officer who fears a protest?",n:"c3"},
+{l:"A court should decide, not the government.",who:"The film’s producer says",p:"Before release or after? A film stuck in court for years is as good as banned.",n:"c4"},
+{l:"It depends on the film.",who:"A law student says",p:"Depends on what, exactly? Without a test, “it depends” just means whoever holds power decides.",n:"c5"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 19(1)(a)",x:"All citizens have the right to freedom of speech and expression. Courts have read this to cover films as well as print. The right isn’t absolute: Article 19(2) lists the grounds on which it can be limited."},
+{t:"held",tag:"The Court held",h:"Union of India v. K.M. Shankarappa (2001)",x:"The Court upheld the striking down of a provision that let the Central Government re-examine a film already certified by the censor board. Once the expert body has cleared a film, the executive can’t simply sit in appeal over it. Law and order, the Court said, is the State’s job to maintain."}]},
+c2:{short:"The mob",q:"If a mob is the danger, who should be restrained: the film or the mob?",sub:"",
+opts:[
+{l:"The mob. The police should protect the screening.",who:"A sceptic says",p:"Police are finite. Must the state guard every unpopular film in every town?",n:"c5"},
+{l:"The film, if the danger is real.",who:"A free-speech lawyer says",p:"Then anyone can veto a film by threatening violence. You’ve given the loudest people the power to decide.",n:"c3"}],
+doors:[
+{t:"held",tag:"The Court held",h:"S. Rangarajan v. P. Jagjivan Ram (1989)",x:"A Tamil film about reservation faced protests. The Supreme Court said the danger must be close and direct, “like a spark in a powder keg,” not a remote possibility. It also said the state can’t give in to threats of protest. Its job is to protect the speech."},
+{t:"held",tag:"The Court held",h:"Padmaavat (2018)",x:"Several states banned Padmaavat after the censor board had cleared it. The Supreme Court stayed those bans, saying states must keep order rather than stop a certified film."},
+{t:"idea",tag:"The idea",h:"The heckler’s veto",x:"If a threat of violence is enough to silence a speaker, whoever threatens most controls what can be said. Critics of bans use this argument. Defenders reply that real danger can’t just be wished away."}]},
+c3:{short:"Public order",q:"What counts as “public order”?",sub:"",
+opts:[
+{l:"Only direct, immediate danger of violence.",who:"A state official says",p:"That’s a very high bar. A film that stokes hatred slowly never meets it, and the damage is done anyway.",n:"c5"},
+{l:"A broad reading. The state should err on the side of safety.",who:"A critic says",p:"Broad words can be turned against criticism of the government itself. Where does it stop?",n:"c4"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 19(2)",x:"Free speech under Article 19(1)(a) can be limited only on listed grounds, among them the sovereignty and integrity of India (added in 1963), the security of the State, friendly relations with foreign States, public order, decency or morality, defamation, contempt of court and incitement to an offence. The restriction must also be reasonable."},
+{t:"held",tag:"The Court held",h:"Romesh Thappar v. State of Madras (1950)",x:"Madras banned the magazine Cross Roads, citing public safety. The Court struck the ban down: the Constitution then allowed limits for “security of the State,” and public order wasn’t on the list."},
+{t:"idea",tag:"How it changed",h:"The First Amendment (1951)",x:"Parliament responded by adding “public order,” by adding friendly relations with foreign States and incitement to an offence, and by requiring that restrictions be “reasonable.” Supporters said the State needed these powers. Some members of Parliament feared they could be used against dissent."}]},
+c4:{short:"Before release",q:"Should anyone be able to stop a film before anyone has seen it?",sub:"",
+opts:[
+{l:"No. Punish it after release if it breaks the law.",who:"A film regulator says",p:"A film’s harm can be done by the time a court acts. Cinema isn’t a pamphlet.",n:"c5"},
+{l:"Yes. Films hit harder than print, so review first.",who:"A filmmaker says",p:"Then a committee’s taste becomes the nation’s. Who watches the censors?",n:"c6"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Brij Bhushan v. State of Delhi (1950)",x:"The Court struck down an order requiring a newspaper, the Organiser, to get its content approved before printing. Pre-censorship of the press was treated as a serious restriction."},
+{t:"held",tag:"The Court held",h:"K.A. Abbas v. Union of India (1970)",x:"The Court upheld pre-censorship for films, reasoning that cinema’s impact differs from print and justifies its own system. It also said censors must apply their standards with care and a commitment to artistic freedom."},
+{t:"text",tag:"The text",h:"The Cinematograph Act, 1952",x:"Films need certification from the Central Board of Film Certification before public exhibition. The Board can ask for cuts, restrict a film to adults, or refuse a certificate, on grounds that mirror Article 19(2). A 2023 amendment split the UA category into age bands (UA 7+, UA 13+, UA 16+)."}]},
+c5:{short:"The test",q:"Is there a test that doesn’t depend on who is offended?",sub:"",
+opts:[
+{l:"Judge by the average reasonable viewer.",who:"A member of the targeted community says",p:"Reasonable by whose standard? The “average viewer” is often the majority, and it’s not the one being mocked.",n:"c6"},
+{l:"Judge by the most vulnerable audience.",who:"A filmmaker says",p:"Then the most easily offended group sets the limit for everyone.",n:"c6"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Ramesh v. Union of India (1988)",x:"Judging a TV serial, the Court said the effect of speech should be measured by the standard of reasonable, strong-minded, firm and courageous people, not those with weak and vacillating minds who see danger in every hostile word. The phrase goes back to Justice Vivian Bose, who used it in the Nagpur High Court in 1947."},
+{t:"held",tag:"The Court held",h:"Shreya Singhal v. Union of India (2015)",x:"The Court distinguished discussion and advocacy, even of unpopular views, from incitement. Only incitement can be restricted on grounds like public order."},
+{t:"contested",tag:"Still contested",h:"Whose “reasonable”?",x:"Some argue the reasonable-person standard mirrors the majority’s tolerance. Others argue that protecting the most easily offended hands a veto to the most sensitive. Courts and scholars haven’t settled this."}]},
+c6:{short:"Flip it",q:"Now the film mocks something you hold sacred. Does your answer change?",sub:"",
+opts:[
+{l:"Yes, it changes, and that makes me uneasy.",who:"A thought",p:"Worth noticing. A rule you’d apply only to views you dislike isn’t really a rule.",n:"end"},
+{l:"No. Same rule either way.",who:"A thought",p:"Even when it’s cruel to people like you? Consistency is a principle, but is it the only one?",n:"end"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Bobby Art International v. Om Pal Singh Hoon (1996)",x:"Bandit Queen’s scenes of nudity and sexual violence were challenged. The Court looked at the film as a whole and in context, reasoning that disturbing scenes can serve a film’s message about the harm being shown."},
+{t:"contested",tag:"Still contested",h:"The consistency problem",x:"Political theorists ask whether a free-speech rule survives when applied to speech you hate. Some say consistency is the whole point. Others say groups with a history of being targeted have a stronger claim to protection. This is open."}]}
+};
+Object.assign(C,{
+g1:{short:"The unsigned bill",q:"The Governor won’t sign.",sub:"Your state assembly passes a bill. The Governor, appointed by the Centre, neither signs it nor sends it back. Two years pass. What should happen?",
+opts:[
+{l:"It’s the Governor’s call. That’s the job.",who:"A state legislator says",p:"So one appointed person can quietly cancel what an elected assembly voted for, just by doing nothing?",n:"g2"},
+{l:"A court should set a deadline.",who:"A constitutional lawyer says",p:"The Constitution’s framers gave no deadline. Is a court fixing one interpreting the text, or writing it?",n:"g2"},
+{l:"After a deadline, treat the bill as signed.",who:"A former Governor says",p:"A law nobody signed? Then the Governor’s role in the process stops meaning anything.",n:"g3"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 200",x:"When a bill reaches the Governor, they can assent, withhold assent, or reserve it for the President. For bills other than money bills, they may also return it to the assembly “as soon as possible” with a message. If the assembly passes it again, the Governor “shall not withhold assent.” No number of days is written anywhere."},
+{t:"held",tag:"The Court held",h:"State of Tamil Nadu v. Governor of Tamil Nadu (2025)",x:"In April 2025 a two-judge bench set deadlines of one to three months for Governors to act on bills. Using its special power under Article 142, it treated ten Tamil Nadu bills the Governor had held back as having received assent."}]},
+g2:{short:"Deadlines",q:"Can a court set a deadline the Constitution never wrote?",sub:"",
+opts:[
+{l:"Yes. A power without a time limit is a veto in disguise.",who:"A Union government lawyer says",p:"Other high offices have no written deadlines either. Should courts start a clock on all of them?",n:"g3"},
+{l:"No. Courts shouldn’t rewrite the text.",who:"A state chief minister says",p:"Then what stops the next Governor sitting on bills for five years? A right with no remedy isn’t much of a right.",n:"g3"}],
+doors:[
+{t:"held",tag:"The Court advised",h:"Presidential Reference on assent to bills (2025)",x:"The President asked the Supreme Court fourteen questions under Article 143 after the Tamil Nadu ruling. In November 2025 a five-judge bench said courts can’t impose timelines on Governors or the President, and there is no “deemed assent.” But Governors can’t sit on bills indefinitely, and for long, unexplained delay a court can direct them to decide, without telling them how."},
+{t:"idea",tag:"How it changed",h:"Two benches, opposite answers, seven months apart",x:"Opposition-ruled states called the reference an appeal in disguise. The Centre said the earlier ruling clashed with larger-bench decisions. An advisory opinion under Article 143 isn’t a judgment in a case, and how much it binds future courts is itself debated."}]},
+g3:{short:"Flip it",q:"Now the Governor is blocking a bill you think is dangerous. Glad they can?",sub:"",
+opts:[
+{l:"Yes. Someone should be able to pause a bad law.",who:"A thought",p:"Then you want a check, not a deadline. But a check held by an unelected appointee answers to whom?",n:"end"},
+{l:"No. Courts exist to strike down bad laws, not Governors.",who:"A thought",p:"Consistent. But courts act only after a law exists and someone challenges it. Is that always soon enough?",n:"end"}],
+doors:[
+{t:"text",tag:"The text",h:"Articles 155 and 156",x:"The Governor is appointed by the President, which in practice means the Union government, and holds office “during the pleasure of the President.” That is why states see the office as the Centre’s agent and the Centre sees it as a constitutional safeguard."},
+{t:"contested",tag:"Still contested",h:"Agent or umpire?",x:"Commissions on Centre-state relations have repeatedly recommended limits on how Governors are chosen and how they use discretion. Whether the office is a neutral umpire or a political tool depends a lot on who is asking."}]},
+e1:{short:"Dismissed",q:"Your state government has been dismissed.",sub:"The Union government says the state can’t be run according to the Constitution. Your elected government is removed and the state is run from Delhi. What should happen?",
+opts:[
+{l:"Never acceptable. Voters chose that government.",who:"A former Union Home Secretary says",p:"And if a state government openly refuses to follow the Constitution, or violence takes over? Someone has to act.",n:"e2"},
+{l:"Sometimes needed when things truly break down.",who:"A state opposition leader says",p:"Who decides it has “broken down”? The party in power in Delhi, about a rival party’s state.",n:"e2"},
+{l:"Only after the assembly votes on whether the government has a majority.",who:"A Governor says",p:"Some crises aren’t about numbers in the house. What if the breakdown is on the streets?",n:"e2"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 356",x:"If the President, on a report from the Governor or otherwise, is satisfied that a state’s government can’t be carried on in accordance with the Constitution, they can take over its functions. Parliament must approve, and the rule is time-limited."},
+{t:"idea",tag:"The idea",h:"Ambedkar’s “dead letter”",x:"In the Constituent Assembly in August 1949, Ambedkar defended the provision while hoping it would never be used and would remain a “dead letter.” It was first used in Punjab in 1951. By one count it has been used around 134 times since."}]},
+e2:{short:"Review",q:"Should a court be able to undo it?",sub:"",
+opts:[
+{l:"Yes. Otherwise the power has no limit.",who:"A Union minister says",p:"Judges deciding whether a state is governable? That’s a political judgment, not a legal one.",n:"e3"},
+{l:"No. It’s a political call; voters can punish it.",who:"A dismissed chief minister says",p:"By the next election the damage is done. Elections don’t give back the years.",n:"e3"}],
+doors:[
+{t:"held",tag:"The Court held",h:"S.R. Bommai v. Union of India (1994)",x:"Nine judges held that a proclamation under Article 356 can be reviewed by courts. Whether a government has a majority should be tested on the floor of the assembly, not decided by the Governor. The assembly shouldn’t be dissolved before Parliament approves the proclamation. After Bommai, use of Article 356 fell sharply."},
+{t:"held",tag:"The Court held",h:"Rameshwar Prasad v. Union of India (2006)",x:"The Court found the 2005 dissolution of the Bihar assembly unconstitutional. It did not restore the assembly, because fresh elections were already under way. The lesson people draw depends on what they think a remedy is for."}]},
+e3:{short:"Emergency",q:"Now it’s the whole country. Can rights be switched off in an emergency?",sub:"",
+opts:[
+{l:"Some can. Survival comes first.",who:"A former detainee of 1975 says",p:"Which ones? In 1976 the answer included the right not to be held without trial.",n:"end"},
+{l:"No. Rights matter most in exactly those moments.",who:"A security official says",p:"Even in a war, with no time to go through courts?",n:"end"}],
+doors:[
+{t:"held",tag:"The Court held",h:"ADM Jabalpur v. Shivkant Shukla (1976)",x:"During the 1975 Emergency the Court ruled 4:1 that detainees couldn’t go to court to challenge their detention while the right to life and liberty was suspended. Justice H.R. Khanna dissented alone. In 2017 the Court said the majority had been seriously wrong."},
+{t:"idea",tag:"How it changed",h:"The 44th Amendment (1978)",x:"After the Emergency, Parliament replaced “internal disturbance” with “armed rebellion” as a ground for a national emergency, required the Cabinet’s written advice, and made Articles 20 and 21 impossible to suspend during one."}]},
+p1:{short:"Watched",q:"The police won’t stop watching you.",sub:"You were acquitted, but you’re on a police list. Officers knock at night, check you’re home, and track where you go. What should be allowed?",
+opts:[
+{l:"None of it. I was acquitted.",who:"A police officer says",p:"Acquittal isn’t innocence of everything. Should police ignore someone with a long record?",n:"p2"},
+{l:"Tracking is fine; entering my home at night isn’t.",who:"A civil liberties lawyer says",p:"Being followed everywhere you go is less invasive than a knock on the door?",n:"p2"},
+{l:"All of it, if it prevents crime.",who:"A privacy researcher says",p:"Then anyone the police list can be watched forever, on suspicion alone.",n:"p2"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Kharak Singh v. State of U.P. (1962)",x:"The Court struck down night-time domiciliary visits as a violation of personal liberty, but upheld shadowing and other surveillance. The majority said the Constitution has no right to privacy. Justice Subba Rao, dissenting, said privacy is an essential part of personal liberty and would have struck the whole scheme."},
+{t:"text",tag:"The text",h:"Article 21",x:"“No person shall be deprived of his life or personal liberty except according to procedure established by law.” The word “privacy” doesn’t appear anywhere in the Constitution."}]},
+p2:{short:"Unwritten",q:"Can privacy be a fundamental right if the Constitution never says it?",sub:"",
+opts:[
+{l:"Yes. Liberty means little without it.",who:"A judge in the 1950s might say",p:"If judges can find unwritten rights, what stops them finding whatever they like?",n:"p3"},
+{l:"No. Parliament should create it by law.",who:"A journalist says",p:"Then the government being watched over decides how much it can watch you.",n:"p3"}],
+doors:[
+{t:"held",tag:"The Court held",h:"K.S. Puttaswamy v. Union of India (2017)",x:"Nine judges held unanimously that privacy is a fundamental right, part of life and liberty under Article 21. They overruled Kharak Singh and an earlier case on this point. Any intrusion must have a basis in law, pursue a legitimate aim, and be proportionate."},
+{t:"held",tag:"The Court held",h:"PUCL v. Union of India (1997)",x:"On phone tapping, the Court said a telephone conversation is part of private life and set procedural safeguards: written orders by a senior official, limits on duration, and a review committee."}]},
+p3:{short:"Spyware",q:"Phones may carry spyware. The state says “national security.” Is that the end of the question?",sub:"",
+opts:[
+{l:"Yes. Some things can’t be made public.",who:"A petitioner’s lawyer says",p:"Then “national security” becomes a phrase that ends every question about how power is used.",n:"end"},
+{l:"No. Someone independent must look.",who:"A former intelligence officer says",p:"Investigations leak. Exposing methods can help the very people being watched for good reason.",n:"end"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Manohar Lal Sharma v. Union of India (Pegasus, 2021)",x:"After reports that Pegasus spyware targeted Indian phones, the Court said the state doesn’t get a free pass every time it raises national security, and noted that surveillance can make people censor themselves. It appointed a committee overseen by retired Justice R.V. Raveendran."},
+{t:"contested",tag:"Still contested",h:"What the committee found",x:"In 2022 the Court reported that malware was found on 5 of the 29 phones examined, but it couldn’t be confirmed as Pegasus, and the Union didn’t cooperate. The reports remain sealed and the case remains pending."}]},
+a1:{short:"Arrested",q:"You’ve been arrested at midnight.",sub:"Police pick you up at home over a complaint for an offence with a maximum of three years in prison. Nobody tells you why. What are you owed?",
+opts:[
+{l:"To be told why, right now.",who:"A station officer says",p:"Explaining every arrest on the spot could tip off accomplices. Shouldn’t that wait till the station?",n:"a2"},
+{l:"A lawyer and a phone call to family.",who:"A victim’s family says",p:"The person who hurt us gets a lawyer at midnight. Who looks after our rights?",n:"a2"},
+{l:"Not to be arrested at all for something this minor.",who:"An investigating officer says",p:"Without arrest, how do I stop them threatening the complainant or vanishing?",n:"a2"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 22(1) and (2)",x:"An arrested person must be told the grounds of arrest as soon as possible, can consult a lawyer of their choice, and must be produced before a magistrate within 24 hours, not counting travel time."},
+{t:"held",tag:"The Court held",h:"D.K. Basu v. State of West Bengal (1997)",x:"Responding to deaths in custody, the Court set guidelines for every arrest. Officers must carry name tags, and a memo of arrest must be signed by a witness and the arrested person. A relative or friend must be told, and the arrested person gets medical checks. Officers who don’t comply face departmental action and contempt."}]},
+a2:{short:"Why arrest",q:"Should police need a reason to arrest, beyond having the power to?",sub:"",
+opts:[
+{l:"Yes. Arrest is a punishment before any trial.",who:"A police trainer says",p:"Every requirement adds paperwork in stations that are already short of staff. Who pays for that?",n:"a3"},
+{l:"No. Police judgment on the ground matters.",who:"A lawyer says",p:"Arrest can destroy a job and a reputation in one night, even if the case collapses later.",n:"a3"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Joginder Kumar v. State of U.P. (1994)",x:"The Court said the existence of the power to arrest is one thing, and the justification for using it is another. No arrest should be made without a reasonable belief that it is necessary."},
+{t:"held",tag:"The Court held",h:"Arnesh Kumar v. State of Bihar (2014)",x:"For offences punishable with up to seven years, police must record reasons why arrest is necessary, and should otherwise send a notice to appear. Magistrates must not authorise detention mechanically. The notice requirement now sits in Section 35 of the BNSS, the 2023 criminal procedure code."}]},
+a3:{short:"Detained",q:"Now there’s no crime at all. The state wants to detain you to stop one you might commit.",sub:"",
+opts:[
+{l:"Never. No crime, no jail.",who:"A home ministry official says",p:"And if intelligence says an attack is coming, should the state wait until it happens?",n:"end"},
+{l:"Allowed, with strict limits.",who:"A former detainee says",p:"“Strict limits” written by the people who decide who is dangerous.",n:"end"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 22(3) to (7)",x:"Unusually for a democracy, the Constitution itself permits preventive detention. Detention beyond three months needs an advisory board’s opinion, and the detained person must be told the grounds and allowed to make a representation."},
+{t:"idea",tag:"How it changed",h:"From Gopalan (1950) to Maneka Gandhi (1978)",x:"In A.K. Gopalan the Court read “procedure established by law” to mean any procedure Parliament enacts. In Maneka Gandhi it said the procedure must also be fair, just and reasonable, and that Articles 14, 19 and 21 must be read together."}]},
+r1:{short:"Your land",q:"The city wants your house.",sub:"The municipal corporation says your plot is needed for a road. It offers a cheque, but no notice and no hearing. What should happen?",
+opts:[
+{l:"Pay fairly and it’s done. Roads matter.",who:"A homeowner says",p:"You’d accept a cheque for the place your family has lived for fifty years, with no chance to object?",n:"r2"},
+{l:"Not without notice and a hearing.",who:"A city planner says",p:"Hear every owner along a ten-kilometre road and nothing gets built.",n:"r2"},
+{l:"My property is my right. Nobody takes it.",who:"A landless farmer says",p:"Unlimited property rights mostly protect those who already own a lot.",n:"r3"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 300A",x:"“No person shall be deprived of his property save by authority of law.” Property was once a fundamental right under Articles 19(1)(f) and 31. The 44th Amendment (1978) moved it here, making it a constitutional right rather than a fundamental one."},
+{t:"held",tag:"The Court held",h:"Kolkata Municipal Corporation v. Bimal Kumar Shah (2024)",x:"The Court said a power to acquire plus compensation isn’t enough. It named seven sub-rights: notice, a hearing, a reasoned decision, acquisition only for a public purpose, fair compensation, an efficient process within time limits, and a proper conclusion. Skip one and the taking lacks authority of law."}]},
+r2:{short:"Common good",q:"Is your house a “material resource of the community”?",sub:"",
+opts:[
+{l:"No. Private homes aren’t the community’s.",who:"A housing activist says",p:"Then crumbling rented buildings with tenants inside are untouchable because someone owns them?",n:"r3"},
+{l:"It can be, if the common good needs it.",who:"A property owner says",p:"Then what private property isn’t? A phrase that covers everything limits nothing.",n:"r3"}],
+doors:[
+{t:"text",tag:"The text",h:"Article 39(b)",x:"A Directive Principle: the state should ensure that ownership and control of the material resources of the community are distributed to best serve the common good. Directive Principles guide policy but can’t be enforced in court."},
+{t:"held",tag:"The Court held",h:"Property Owners Association v. State of Maharashtra (2024)",x:"Nine judges held 8:1 that not all private property is a material resource of the community. It depends on the resource’s nature, its effect on the community’s well-being and how concentrated it is. That rejected Justice Krishna Iyer’s broad reading from 1977. Justice Sudhanshu Dhulia dissented."}]},
+r3:{short:"Amend it away",q:"Can Parliament amend the Constitution to take away any right at all?",sub:"",
+opts:[
+{l:"Yes. Parliament represents the people.",who:"A judge says",p:"A big enough majority could then abolish elections themselves. Is anything off limits?",n:"end"},
+{l:"No. Some things must be beyond reach.",who:"A member of Parliament says",p:"Who decides what those things are? Unelected judges, with a list they wrote themselves.",n:"end"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Golaknath v. State of Punjab (1967)",x:"In a fight over land reform laws, eleven judges ruled 6:5 that Parliament could not amend fundamental rights at all."},
+{t:"held",tag:"The Court held",h:"Kesavananda Bharati v. State of Kerala (1973)",x:"Thirteen judges ruled 7:6 that Parliament can amend any part of the Constitution but cannot destroy its basic structure. In Minerva Mills (1980) the Court used this to strike down parts of the 42nd Amendment. The Court has never given a full list of what the basic structure contains."}]},
+q1:{short:"Left behind",q:"Within the quota, your community is left behind.",sub:"Seats are reserved for Scheduled Castes, but data shows a few communities within the list take most of them. The state wants a share set aside for the least represented. Should it?",
+opts:[
+{l:"Yes. Help should reach those who need it most.",who:"A Dalit scholar says",p:"Splitting the list lets the state divide groups who share the same history of untouchability.",n:"q2"},
+{l:"No. The Scheduled Castes are one class.",who:"A leader of a smaller community says",p:"One class on paper, while my community still has almost no graduates. Equality for whom?",n:"q2"}],
+doors:[
+{t:"text",tag:"The text",h:"Articles 15(4), 16(4) and 341",x:"The state may make special provisions and reserve posts for backward classes, including Scheduled Castes and Scheduled Tribes. Which castes count as Scheduled Castes is set by the President’s list under Article 341, which only Parliament can change."},
+{t:"held",tag:"The Court held",h:"State of Punjab v. Davinder Singh (2024)",x:"Seven judges ruled 6:1 that states can sub-classify Scheduled Castes, overruling E.V. Chinnaiah (2004). It must rest on data about backwardness and representation, and can’t give a subgroup the entire quota. Justice Bela Trivedi dissented: the Article 341 list is a single class that states can’t rearrange."}]},
+q2:{short:"Creamy layer",q:"Should the better-off among Scheduled Castes lose the benefit?",sub:"",
+opts:[
+{l:"Yes. A judge’s child doesn’t need a quota.",who:"A Dalit civil servant says",p:"Money didn’t stop my landlord refusing to rent to me. Caste discrimination doesn’t end at a pay grade.",n:"q3"},
+{l:"No. Caste stigma doesn’t end with income.",who:"A first-generation student says",p:"Then the same few families keep taking seats generation after generation, while mine waits.",n:"q3"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Indra Sawhney v. Union of India (1992)",x:"Nine judges upheld 27% reservation for Other Backward Classes but required the “creamy layer” among them to be excluded. They also said total reservation should ordinarily not exceed 50%."},
+{t:"contested",tag:"Still contested",h:"A creamy layer for Scheduled Castes?",x:"In Davinder Singh, four judges said states should develop a creamy-layer test for Scheduled Castes and Tribes, possibly different from the one for OBCs. This wasn’t needed for the decision, so it isn’t binding, and the Union government said it had no plans to apply it."}]},
+q3:{short:"Income alone",q:"Can reservation be based on poverty alone, not caste?",sub:"",
+opts:[
+{l:"Yes. Poverty is poverty.",who:"A dissenting judge’s reasoning",p:"Then why does the new quota leave out poor people from Scheduled Castes, Tribes and OBCs?",n:"end"},
+{l:"No. Reservation exists to remedy caste exclusion.",who:"A poor student from a general-category family says",p:"My family has nothing either. Does the Constitution have nothing for me?",n:"end"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Janhit Abhiyan v. Union of India (2022)",x:"Five judges ruled 3:2 to uphold the 103rd Amendment (2019), which allowed up to 10% reservation for economically weaker sections not covered by other quotas. The majority said the 50% ceiling isn’t inflexible. Chief Justice U.U. Lalit and Justice S. Ravindra Bhat dissented, saying excluding SC, ST and OBC poor from it violates the basic structure."}]},
+s1:{short:"The temple",q:"A temple bars women of a certain age.",sub:"An ancient temple doesn’t allow women aged 10 to 50 to enter, saying its deity is celibate. Women devotees go to court. Who should win?",
+opts:[
+{l:"The women. Equality applies everywhere.",who:"A woman devotee of the temple says",p:"I believe in this custom. Why should a court overrule my faith in the name of my equality?",n:"s2"},
+{l:"The temple. Faith decides its own practices.",who:"A women’s rights lawyer says",p:"Untouchability was once a “practice” too. Should custom always win over dignity?",n:"s2"}],
+doors:[
+{t:"text",tag:"The text",h:"Articles 25 and 26",x:"Everyone has freedom of conscience and the right to practise religion, subject to public order, morality and health. The state may still throw open Hindu religious institutions of a public character to all classes of Hindus. Religious denominations can manage their own affairs in matters of religion."},
+{t:"held",tag:"The Court held",h:"Indian Young Lawyers Association v. State of Kerala (2018)",x:"A five-judge bench ruled 4:1 that excluding women of menstruating age from Sabarimala was unconstitutional. Justice Indu Malhotra, the only woman on the bench, dissented: courts shouldn’t impose their own idea of rationality on matters of deep faith."}]},
+s2:{short:"Who decides",q:"Who decides what is essential to a religion?",sub:"",
+opts:[
+{l:"The believers and their authorities.",who:"A reformer says",p:"Then every exclusion can be called essential, and reformers inside the faith lose every time.",n:"end"},
+{l:"Courts, by studying the religion.",who:"A priest says",p:"Secular judges ruling on theology? That isn’t neutrality, it’s the state choosing which version of my faith is real.",n:"end"}],
+doors:[
+{t:"held",tag:"The Court held",h:"Shirur Mutt (1954)",x:"The Court said religion covers not just belief but practices “essential” to it, judged by the religion’s own doctrines. Over decades this became the “essential religious practices” test, which has courts deciding what a faith really requires."},
+{t:"contested",tag:"Still contested",h:"The nine-judge reference",x:"In 2019 a review bench sent the larger questions to nine judges. These include the essential practices test and how religious freedom fits with equality. The bench heard arguments from April 2026 and reserved its judgment in May 2026. It isn’t re-deciding Sabarimala entry itself, and the outcome will affect cases on dargahs, Dawoodi Bohra practices and Parsi women."}]}
+});
+var T=[
+{id:"film-ban",start:"c1",h:"Your film has been banned",x:"Free speech and its limits"},
+{id:"governor",start:"g1",h:"The Governor won’t sign",x:"Federalism and assent to bills"},
+{id:"emergency",start:"e1",h:"Your state government has been dismissed",x:"President’s Rule and emergencies"},
+{id:"privacy",start:"p1",h:"The police won’t stop watching you",x:"Privacy and surveillance"},
+{id:"arrest",start:"a1",h:"You’ve been arrested at midnight",x:"Arrest, custody and detention"},
+{id:"property",start:"r1",h:"The city wants your house",x:"Property and the basic structure"},
+{id:"reservation",start:"q1",h:"Within the quota, your community is left behind",x:"Equality and reservation"},
+{id:"religion",start:"s1",h:"A temple bars women of a certain age",x:"Religious freedom and equality"}];
+var app=document.getElementById("app"),cur="home",cluster="film-ban",pick=-1,trail=[],opened=[],playId=newId();
+function newId(){if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==="x"?r:(r&3|8)).toString(16)})}
+function save(done){try{fetch("/api/play",{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify({id:playId,cluster:cluster,completed:done,path:trail.map(function(s){return{card:s.id,choice:s.label,doors:s.doors}})})}).catch(function(){})}catch(e){}}
+function bar(){var h='<div class="trail" aria-label="Your path">';
+trail.forEach(function(s){h+='<span class="node"><span class="dot"></span>'+s.short+'</span><span class="link"></span>'});
+if(C[cur])h+='<span class="node now"><span class="dot"></span>'+C[cur].short+'</span>';return h+'</div>'}
+function render(){
+if(cur==="home"){var h='<h1>Argue with the Constitution</h1><p class="sub">Pick a situation. Choose your instinct, hear the pushback, and follow the disagreement into the text and the cases. No score.</p>';T.forEach(function(t){h+='<button class="opt" data-a="topic" data-t="'+t.id+'"><b>'+t.h+'</b><br><small>'+t.x+'</small></button>'});app.innerHTML=h+foot();return}
+if(cur==="end"){var f=trail[0],l=trail[trail.length-1],n=0,h=bar()+'<h1>Where you went</h1><p class="sub">There’s no score. Look at where your answers moved, and what you looked at along the way.</p>';
+trail.forEach(function(s){n+=s.doors.length;h+='<div class="step"><span class="dot"></span><div><small>'+s.q+'</small>'+s.label+(s.doors.length?'<span class="opened">You looked into: '+s.doors.join(", ")+'</span>':'')+'</div></div>'});
+h+='<div class="next"><p>You began with “'+f.label+'” and ended with “'+l.label+'”.'+(n?' On the way you opened '+n+' door'+(n===1?'':'s')+' into the record.':' You didn’t open any doors into the record. Try another path and see what’s behind them.')+'</p><button class="go" data-a="mail">Keep going by email</button><button class="go alt" data-a="restart">Try another topic</button></div>';
+app.innerHTML=h+foot();return}
+if(cur==="mail"){var h='<h1>Keep exploring by email</h1><p class="sub">Now and then, one short piece of the Constitution in your inbox: an article, the argument behind it, and how it changed. No quizzes, no score.</p>'+
+'<form id="sub" novalidate><label for="nm">Your name</label><input id="nm" name="name" autocomplete="name" maxlength="100" required>'+
+'<label for="em">Your email</label><input id="em" name="email" type="email" autocomplete="email" maxlength="254" required>'+
+'<div class="hp" aria-hidden="true"><label for="ws">Leave this empty</label><input id="ws" name="website" tabindex="-1" autocomplete="off"></div>'+
+'<p class="err" role="alert"></p><button class="go" type="submit">Send me the bits</button><button class="go alt" type="button" data-a="restart">No thanks, try another topic</button>'+
+'<p class="fine">We only use your email to send these. You can ask to be removed at any time.</p></form>';
+app.innerHTML=h+foot();return}
+if(cur==="thanks"){app.innerHTML='<h1>You’re in</h1><p class="sub">The first one is on its way soon. Meanwhile, the questions you didn’t take are still open.</p><button class="go" data-a="restart">Try another topic</button>'+foot();return}
+var c=C[cur],o=pick>=0?c.opts[pick]:null,h=bar()+'<h1>'+c.q+'</h1>'+(c.sub?'<p class="sub">'+c.sub+'</p>':'');
+c.opts.forEach(function(x,i){h+='<button class="opt'+(i===pick?' sel':'')+'" data-a="pick" data-i="'+i+'">'+x.l+'</button>'});
+if(o){h+='<div class="push" role="status"><b>'+o.who+'</b><p>'+o.p+'</p></div>';
+if(c.doors.length){h+='<p class="lead">Follow the disagreement into the record</p>';
+c.doors.forEach(function(d,i){h+='<details data-d="'+i+'"'+(opened.indexOf(d.h)>=0?' open':'')+'><summary>'+d.h+'<span class="tag '+d.t+'">'+d.tag+'</span></summary><p>'+d.x+'</p></details>'})}
+h+='<div class="next">'+(o.n==="end"?'':'<p class="nq">'+C[o.n].q+'</p>')+'<button class="go" data-a="go">'+(o.n==="end"?'See where you went':'Take this question')+'</button></div>'}
+app.innerHTML=h+foot()}
+function foot(){return'<p class="note">A prototype. The scenario is fictional and the case summaries are simplified, so check the judgments themselves before relying on them. Many of these questions have no single legal answer. Your path through the questions is recorded anonymously so we can see which arguments move people.</p>'}
+app.addEventListener("toggle",function(e){var d=e.target;if(!d.dataset||d.dataset.d===undefined||!d.open||!C[cur])return;var h=C[cur].doors[+d.dataset.d].h;if(opened.indexOf(h)<0)opened.push(h)},true);
+app.addEventListener("click",function(e){var b=e.target.closest("[data-a]");if(!b)return;var a=b.dataset.a;
+if(a==="pick"){pick=+b.dataset.i;render();var p=app.querySelector(".push");if(p)p.scrollIntoView({behavior:"smooth",block:"nearest"})}
+else if(a==="go"){var c=C[cur],o=c.opts[pick];trail.push({id:cur,short:c.short,q:c.q,label:o.l,doors:opened});opened=[];cur=o.n;pick=-1;save(cur==="end");render();window.scrollTo(0,0)}
+else if(a==="mail"){cur="mail";render();window.scrollTo(0,0);document.getElementById("nm").focus()}
+else if(a==="topic"){var t=T.filter(function(x){return x.id===b.dataset.t})[0];cluster=t.id;cur=t.start;pick=-1;trail=[];opened=[];playId=newId();render();window.scrollTo(0,0)}
+else if(a==="restart"){cur="home";pick=-1;trail=[];opened=[];playId=newId();render();window.scrollTo(0,0)}});
+app.addEventListener("submit",function(e){e.preventDefault();var f=e.target,err=f.querySelector(".err"),btn=f.querySelector("[type=submit]"),
+nmI=document.getElementById("nm"),emI=document.getElementById("em"),nm=nmI.value.trim(),em=emI.value.trim();
+if(!nm){err.textContent="Add your name.";nmI.focus();return}
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="That email doesn’t look right.";emI.focus();return}
+err.textContent="";btn.disabled=true;btn.textContent="Sending…";
+fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:nm,email:em,website:document.getElementById("ws").value,playId:playId})})
+.then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||"Something went wrong. Try again.");cur="thanks";render();window.scrollTo(0,0)})})
+.catch(function(x){err.textContent=x.message&&x.message.length<80?x.message:"Something went wrong. Try again.";btn.disabled=false;btn.textContent="Send me the bits"})});
+render();
+</script>
+</body>
+</html>
